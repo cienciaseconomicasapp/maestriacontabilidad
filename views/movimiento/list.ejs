@@ -1,0 +1,58 @@
+<%- include('../partials/head') %>
+<div class="d-flex">
+<%- include('../partials/sidebar') %>
+<div class="main-content w-100">
+  <%- include('../partials/topbar') %>
+  <div class="p-4">
+    <%- include('../partials/alerts') %>
+    <div class="card">
+      <div class="card-header bg-white border-0 pt-3 px-4 d-flex justify-content-between align-items-center">
+        <h6 class="fw-semibold mb-0"><i class="fas fa-exchange-alt me-2 text-primary"></i>Movimientos Contables (Partida Doble)</h6>
+        <a href="/movimientos/nuevo" class="btn btn-primary btn-sm"><i class="fas fa-plus me-1"></i>Nuevo Movimiento</a>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover dt" style="font-size:.85rem">
+            <thead class="table-light">
+              <tr>
+                <th>ID</th><th>Comprobante</th><th>Fecha</th><th>Cuenta</th>
+                <th>Centro Costo</th><th class="text-end">Debito</th>
+                <th class="text-end">Credito</th><th>Descripcion</th><th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% movimientos.forEach(m=>{ %>
+              <tr>
+                <td><small class="text-muted">#<%= m.id_mov %></small></td>
+                <td><span class="badge bg-secondary"><%= m.prefijo %>-<%= String(m.comp_numero).padStart(3,'0') %></span></td>
+                <td><small><%= m.comp_fecha?new Date(m.comp_fecha).toLocaleDateString('es-CO'):'-' %></small></td>
+                <td>
+                  <code class="text-primary"><%= m.cuenta_codigo %></code>
+                  <small class="text-muted d-block" style="white-space:nowrap;overflow:hidden;max-width:180px;text-overflow:ellipsis"><%= m.cuenta_nombre %></small>
+                </td>
+                <td><small class="text-muted"><%= m.cc_nombre||'-' %></small></td>
+                <td class="text-end fw-semibold" style="color:<%= m.debito>0?'#1565c0':'#bbb' %>">
+                  <%= m.debito>0?Number(m.debito).toLocaleString('es-CO',{style:'currency',currency:'COP',maximumFractionDigits:0}):'-' %>
+                </td>
+                <td class="text-end fw-semibold" style="color:<%= m.credito>0?'#880e4f':'#bbb' %>">
+                  <%= m.credito>0?Number(m.credito).toLocaleString('es-CO',{style:'currency',currency:'COP',maximumFractionDigits:0}):'-' %>
+                </td>
+                <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"><small title="<%= m.descripcion %>"><%= m.descripcion||'-' %></small></td>
+                <td>
+                  <a href="/movimientos/<%= m.id_mov %>/editar" class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-edit"></i></a>
+                  <form method="POST" action="/movimientos/<%= m.id_mov %>?_method=DELETE" class="d-inline"
+                        onsubmit="return confirm('Eliminar movimiento #<%= m.id_mov %>?')">
+                    <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                  </form>
+                </td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<%- include('../partials/foot') %>

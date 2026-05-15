@@ -1,0 +1,53 @@
+<%- include('../partials/head') %>
+<div class="d-flex">
+<%- include('../partials/sidebar') %>
+<div class="main-content w-100">
+  <%- include('../partials/topbar') %>
+  <div class="p-4">
+    <%- include('../partials/alerts') %>
+    <div class="card">
+      <div class="card-header bg-white border-0 pt-3 px-4 d-flex justify-content-between align-items-center">
+        <h6 class="fw-semibold mb-0"><i class="fas fa-id-badge me-2 text-primary"></i>Empleados</h6>
+        <a href="/empleados/nuevo" class="btn btn-primary btn-sm"><i class="fas fa-plus me-1"></i>Nuevo Empleado</a>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover dt">
+            <thead class="table-light">
+              <tr>
+                <th>Nombre / NIT</th><th>Cargo</th><th>Area</th>
+                <th class="text-end">Salario Base</th><th>Fecha Ingreso</th>
+                <th>Fecha Retiro</th><th>Estado</th><th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% empleados.forEach(e=>{ %>
+              <tr>
+                <td>
+                  <div class="fw-semibold"><%= e.razon_social %></div>
+                  <small class="text-muted"><code><%= e.nit %></code></small>
+                </td>
+                <td><%= e.cargo %></td>
+                <td><small class="text-muted"><%= e.area||'-' %></small></td>
+                <td class="text-end"><%= Number(e.salario_base).toLocaleString('es-CO',{style:'currency',currency:'COP',maximumFractionDigits:0}) %></td>
+                <td><small><%= e.fecha_ingreso?new Date(e.fecha_ingreso).toLocaleDateString('es-CO'):'-' %></small></td>
+                <td><small><%= e.fecha_retiro?new Date(e.fecha_retiro).toLocaleDateString('es-CO'):'-' %></small></td>
+                <td><span class="badge" style="background:<%= e.activo?'#e8f5e9':'#fce4ec' %>;color:<%= e.activo?'#2e7d32':'#c62828' %>"><%= e.activo?'Activo':'Retirado' %></span></td>
+                <td>
+                  <a href="/empleados/<%= e.id_empleado %>/editar" class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-edit"></i></a>
+                  <form method="POST" action="/empleados/<%= e.id_empleado %>?_method=DELETE" class="d-inline"
+                        onsubmit="return confirm('Eliminar este empleado?')">
+                    <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                  </form>
+                </td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<%- include('../partials/foot') %>

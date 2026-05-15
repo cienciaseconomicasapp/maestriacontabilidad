@@ -1,0 +1,69 @@
+<%- include('../partials/head') %>
+<div class="d-flex">
+<%- include('../partials/sidebar') %>
+<div class="main-content w-100">
+  <%- include('../partials/topbar') %>
+  <div class="p-4">
+    <%- include('../partials/alerts') %>
+    <div class="alert alert-warning py-2 small">
+      <i class="fas fa-shield-alt me-2"></i>
+      <strong>Tabla de solo lectura.</strong> Los registros son generados automaticamente por los triggers de MySQL al insertar o modificar movimientos.
+      Mostrando los ultimos 500 eventos.
+    </div>
+    <div class="card">
+      <div class="card-header bg-white border-0 pt-3 px-4">
+        <h6 class="fw-semibold mb-0"><i class="fas fa-shield-alt me-2 text-primary"></i>Auditoria de Movimientos Contables</h6>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover dt" style="font-size:.83rem">
+            <thead class="table-light">
+              <tr>
+                <th>ID Audit</th><th>Momento</th><th>Accion</th><th>ID Mov.</th>
+                <th>ID Comp.</th><th>Usuario BD</th><th>IP</th>
+                <th>Datos Antes</th><th>Datos Despues</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% const accionCls={INSERT:'bg-success',UPDATE:'bg-warning text-dark',DELETE:'bg-danger'}; %>
+              <% registros.forEach(r=>{ %>
+              <tr>
+                <td><small class="text-muted"><%= r.id_audit %></small></td>
+                <td><small><%= r.momento?new Date(r.momento).toLocaleString('es-CO'):'-' %></small></td>
+                <td><span class="badge <%= accionCls[r.accion]||'bg-secondary' %>"><%= r.accion %></span></td>
+                <td><small><%= r.id_mov||'-' %></small></td>
+                <td><small><%= r.id_comp||'-' %></small></td>
+                <td><code class="small"><%= r.usuario_bd %></code></td>
+                <td><small class="text-muted"><%= r.ip_session||'-' %></small></td>
+                <td>
+                  <% if(r.datos_antes) { %>
+                  <small class="text-muted font-monospace" style="white-space:nowrap">
+                    <%= typeof r.datos_antes==='string'?r.datos_antes:JSON.stringify(r.datos_antes) %>
+                  </small>
+                  <% } else { %>
+                  <small class="text-muted">-</small>
+                  <% } %>
+                </td>
+                <td>
+                  <% if(r.datos_despues) { %>
+                  <small class="text-muted font-monospace" style="white-space:nowrap">
+                    <%= typeof r.datos_despues==='string'?r.datos_despues:JSON.stringify(r.datos_despues) %>
+                  </small>
+                  <% } else { %>
+                  <small class="text-muted">-</small>
+                  <% } %>
+                </td>
+              </tr>
+              <% }) %>
+              <% if(!registros.length) { %>
+              <tr><td colspan="9" class="text-center text-muted py-4">Sin registros de auditoria</td></tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<%- include('../partials/foot') %>

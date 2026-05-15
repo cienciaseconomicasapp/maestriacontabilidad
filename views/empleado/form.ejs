@@ -1,0 +1,79 @@
+<%- include('../partials/head') %>
+<div class="d-flex">
+<%- include('../partials/sidebar') %>
+<div class="main-content w-100">
+  <%- include('../partials/topbar') %>
+  <div class="p-4">
+    <%- include('../partials/alerts') %>
+    <div class="card" style="max-width:800px">
+      <div class="card-header bg-white border-0 pt-3 px-4">
+        <h6 class="fw-semibold mb-0"><%= pageTitle %></h6>
+      </div>
+      <div class="card-body px-4 pb-4">
+        <form method="POST" action="<%= action %>">
+          <div class="row g-3">
+
+            <div class="col-12">
+              <label class="form-label fw-semibold small">Tercero vinculado <span class="text-danger">*</span>
+                <small class="text-muted fw-normal">(debe existir en Terceros con tipo = empleado)</small>
+              </label>
+              <select name="id_tercero" class="form-select" required>
+                <option value="">Seleccionar tercero...</option>
+                <% terceros.forEach(t=>{ %>
+                <option value="<%= t.id_tercero %>" <%=empleado&&empleado.id_tercero==t.id_tercero?'selected':''%>>
+                  <%= t.nit %> - <%= t.razon_social %>
+                </option>
+                <% }) %>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-semibold small">Cargo <span class="text-danger">*</span></label>
+              <input type="text" name="cargo" class="form-control"
+                     value="<%= empleado?empleado.cargo:'' %>" required maxlength="100">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold small">Area</label>
+              <input type="text" name="area" class="form-control"
+                     value="<%= empleado&&empleado.area?empleado.area:'' %>" maxlength="80">
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label fw-semibold small">Salario Base <span class="text-danger">*</span></label>
+              <div class="input-group">
+                <span class="input-group-text">$</span>
+                <input type="number" name="salario_base" class="form-control"
+                       value="<%= empleado?empleado.salario_base:'' %>" required min="0" step="100">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label fw-semibold small">Fecha Ingreso <span class="text-danger">*</span></label>
+              <input type="date" name="fecha_ingreso" class="form-control"
+                     value="<%= empleado&&empleado.fecha_ingreso?new Date(empleado.fecha_ingreso).toISOString().slice(0,10):'' %>" required>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label fw-semibold small">Fecha Retiro</label>
+              <input type="date" name="fecha_retiro" class="form-control"
+                     value="<%= empleado&&empleado.fecha_retiro?new Date(empleado.fecha_retiro).toISOString().slice(0,10):'' %>">
+            </div>
+
+            <div class="col-12">
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" name="activo" id="activo"
+                       <%=(!empleado||empleado.activo)?'checked':''%>>
+                <label class="form-check-label small fw-semibold" for="activo">Empleado activo</label>
+              </div>
+            </div>
+          </div>
+          <hr class="my-4">
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary px-4"><i class="fas fa-save me-1"></i>Guardar</button>
+            <a href="/empleados" class="btn btn-outline-secondary px-4">Cancelar</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<%- include('../partials/foot') %>

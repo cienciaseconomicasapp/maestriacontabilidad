@@ -1,0 +1,64 @@
+<%- include('../partials/head') %>
+<div class="d-flex">
+<%- include('../partials/sidebar') %>
+<div class="main-content w-100">
+  <%- include('../partials/topbar') %>
+  <div class="p-4">
+    <%- include('../partials/alerts') %>
+    <div class="card">
+      <div class="card-header bg-white border-0 pt-3 px-4 d-flex justify-content-between align-items-center">
+        <h6 class="fw-semibold mb-0"><i class="fas fa-list-ol me-2 text-primary"></i>Plan Unico de Cuentas (PUC - NIIF)</h6>
+        <a href="/cuentas/nueva" class="btn btn-primary btn-sm"><i class="fas fa-plus me-1"></i>Nueva Cuenta</a>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover dt">
+            <thead class="table-light">
+              <tr>
+                <th>Codigo</th>
+                <th>Nombre</th>
+                <th>Clase</th>
+                <th>Tipo NIIF</th>
+                <th>Naturaleza</th>
+                <th>Niv.</th>
+                <th>Padre</th>
+                <th>Mov.</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% const claseNom=['','Activo','Pasivo','Patrimonio','Ingreso','Gasto','Costo']; %>
+              <% cuentas.forEach(c => { %>
+              <tr>
+                <td><code class="fw-bold"><%= c.codigo %></code></td>
+                <td><%= c.nombre %></td>
+                <td><span class="badge bc<%= c.clase %>"><%= claseNom[c.clase]||c.clase %></span></td>
+                <td><small class="text-muted"><%= c.tipo.replace(/_/g,' ') %></small></td>
+                <td>
+                  <span class="badge" style="background:<%= c.naturaleza==='debito'?'#e3f2fd':'#fce4ec' %>;color:<%= c.naturaleza==='debito'?'#1565c0':'#880e4f' %>">
+                    <%= c.naturaleza %>
+                  </span>
+                </td>
+                <td class="text-center"><%= c.nivel %></td>
+                <td><code><%= c.cuenta_padre||'-' %></code></td>
+                <td class="text-center"><span class="badge <%= c.acepta_mov?'bg-success':'bg-secondary' %>"><%= c.acepta_mov?'Si':'No' %></span></td>
+                <td><span class="badge" style="background:<%= c.activa?'#e8f5e9':'#fce4ec' %>;color:<%= c.activa?'#2e7d32':'#c62828' %>"><%= c.activa?'Activa':'Inactiva' %></span></td>
+                <td>
+                  <a href="/cuentas/<%= c.id_cuenta %>/editar" class="btn btn-sm btn-outline-primary me-1" title="Editar"><i class="fas fa-edit"></i></a>
+                  <form method="POST" action="/cuentas/<%= c.id_cuenta %>?_method=DELETE" class="d-inline"
+                        onsubmit="return confirm('Eliminar la cuenta <%= c.codigo %> - <%= c.nombre.replace(/'/g,\"\") %>?')">
+                    <button class="btn btn-sm btn-outline-danger" title="Eliminar"><i class="fas fa-trash"></i></button>
+                  </form>
+                </td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<%- include('../partials/foot') %>

@@ -1,0 +1,31 @@
+<nav class="sidebar">
+  <div style="background:rgba(0,0,0,.22);padding:18px 20px 16px">
+    <div class="text-white fw-bold" style="font-size:1.05rem"><i class="fas fa-calculator me-2"></i>ASC Sistema</div>
+    <div style="color:rgba(255,255,255,.48);font-size:.75rem;margin-top:2px">Univ. del Atlantico &middot; Maestria</div>
+  </div>
+
+  <ul class="nav flex-column mt-1 flex-grow-1 pb-2">
+    <li><a href="/" class="nav-link <%=(typeof section!=='undefined'&&section==='dashboard')?'active':''%>"><i class="fas fa-home me-2"></i>Dashboard</a></li>
+
+    <div class="sb-label">Tablas Maestras</div>
+    <li><a href="/cuentas"       class="nav-link <%=(typeof section!=='undefined'&&section==='cuentas')?'active':''%>"><i class="fas fa-list-ol me-2"></i>Plan de Cuentas</a></li>
+    <li><a href="/centros-costo" class="nav-link <%=(typeof section!=='undefined'&&section==='centros-costo')?'active':''%>"><i class="fas fa-building me-2"></i>Centros de Costo</a></li>
+    <li><a href="/terceros"      class="nav-link <%=(typeof section!=='undefined'&&section==='terceros')?'active':''%>"><i class="fas fa-users me-2"></i>Terceros</a></li>
+    <li><a href="/empleados"     class="nav-link <%=(typeof section!=='undefined'&&section==='empleados')?'active':''%>"><i class="fas fa-id-badge me-2"></i>Empleados</a></li>
+
+    <div class="sb-label">Contabilidad</div>
+    <li><a href="/comprobantes"  class="nav-link <%=(typeof section!=='undefined'&&section==='comprobantes')?'active':''%>"><i class="fas fa-file-invoice me-2"></i>Comprobantes</a></li>
+    <li><a href="/movimientos"   class="nav-link <%=(typeof section!=='undefined'&&section==='movimientos')?'active':''%>"><i class="fas fa-exchange-alt me-2"></i>Movimientos</a></li>
+    <li><a href="/presupuesto"   class="nav-link <%=(typeof section!=='undefined'&&section==='presupuesto')?'active':''%>"><i class="fas fa-chart-pie me-2"></i>Presupuesto</a></li>
+
+    <div class="sb-label">Control</div>
+    <li><a href="/auditoria"     class="nav-link <%=(typeof section!=='undefined'&&section==='auditoria')?'active':''%>"><i class="fas fa-shield-alt me-2"></i>Auditoria</a></li>
+  </ul>
+
+  <div style="padding:14px 20px;border-top:1px solid rgba(255,255,255,.1)">
+    <div style="color:rgba(255,255,255,.55);font-size:.82rem;margin-bottom:8px"><i class="fas fa-user-circle me-1"></i><%= user ? user.username : '' %></div>
+    <form action="/auth/logout" method="POST">
+      <button class="btn btn-sm btn-outline-light w-100"><i class="fas fa-sign-out-alt me-1"></i>Cerrar sesion</button>
+    </form>
+  </div>
+</nav>

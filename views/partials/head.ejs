@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title><%= pageTitle %> · ASC Contabilidad</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<style>
+  :root { --sb: #0d47a1; --sbw: 248px; }
+  body { background: #f0f2f5; font-family: 'Segoe UI', sans-serif; }
+  .sidebar {
+    width: var(--sbw); min-height: 100vh; background: var(--sb);
+    position: fixed; top: 0; left: 0; overflow-y: auto; z-index: 100;
+    display: flex; flex-direction: column;
+  }
+  .main-content { margin-left: var(--sbw); }
+  .sidebar .nav-link { color: rgba(255,255,255,.72); padding: 7px 20px; font-size: .875rem; border-radius: 0; }
+  .sidebar .nav-link:hover, .sidebar .nav-link.active { color: #fff; background: rgba(255,255,255,.16); }
+  .sidebar .nav-link i { width: 20px; }
+  .sb-label { color: rgba(255,255,255,.38); font-size: .67rem; text-transform: uppercase; letter-spacing: 1px; padding: 12px 20px 3px; }
+  .topbar { background: #fff; border-bottom: 1px solid #e5e7eb; padding: 13px 28px; }
+  .card { border: none; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+  .table th { font-size: .8rem; font-weight: 600; text-transform: uppercase; letter-spacing: .4px; color: #6b7280; }
+  /* Badges clase PUC */
+  .bc1 { background: #e3f2fd; color: #1565c0; }
+  .bc2 { background: #f3e5f5; color: #6a1b9a; }
+  .bc3 { background: #e8f5e9; color: #2e7d32; }
+  .bc4 { background: #fff8e1; color: #e65100; }
+  .bc5 { background: #fce4ec; color: #c62828; }
+  .bc6 { background: #fafafa; color: #424242; border: 1px solid #e0e0e0; }
+  /* Estado badges */
+  .es-contabilizado { background: #e8f5e9; color: #2e7d32; }
+  .es-borrador      { background: #fff8e1; color: #e65100; }
+  .es-anulado       { background: #fce4ec; color: #c62828; }
+</style>
+</head>
+<body>

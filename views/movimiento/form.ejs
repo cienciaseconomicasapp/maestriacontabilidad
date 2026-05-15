@@ -1,0 +1,102 @@
+<%- include('../partials/head') %>
+<div class="d-flex">
+<%- include('../partials/sidebar') %>
+<div class="main-content w-100">
+  <%- include('../partials/topbar') %>
+  <div class="p-4">
+    <%- include('../partials/alerts') %>
+    <div class="card" style="max-width:900px">
+      <div class="card-header bg-white border-0 pt-3 px-4">
+        <h6 class="fw-semibold mb-0"><%= pageTitle %></h6>
+      </div>
+      <div class="card-body px-4 pb-4">
+        <div class="alert alert-info py-2 small">
+          <i class="fas fa-info-circle me-1"></i>
+          <strong>Partida doble:</strong> cada linea debe tener <em>solo</em> debito O credito, nunca ambos.
+        </div>
+        <form method="POST" action="<%= action %>">
+          <div class="row g-3">
+
+            <div class="col-12">
+              <label class="form-label fw-semibold small">Comprobante <span class="text-danger">*</span></label>
+              <select name="id_comp" class="form-select" required>
+                <option value="">Seleccionar comprobante...</option>
+                <% comprobantes.forEach(c=>{ %>
+                <option value="<%= c.id_comp %>" <%=movimiento&&movimiento.id_comp==c.id_comp?'selected':''%>>
+                  <%= c.prefijo %>-<%= String(c.numero).padStart(3,'0') %> |
+                  <%= c.fecha?new Date(c.fecha).toLocaleDateString('es-CO'):'' %> |
+                  <%= c.concepto.substring(0,50) %>
+                </option>
+                <% }) %>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-semibold small">Cuenta Contable <span class="text-danger">*</span></label>
+              <select name="id_cuenta" class="form-select" required>
+                <option value="">Seleccionar cuenta...</option>
+                <% cuentas.forEach(c=>{ %>
+                <option value="<%= c.id_cuenta %>" <%=movimiento&&movimiento.id_cuenta==c.id_cuenta?'selected':''%>>
+                  <%= c.codigo %> - <%= c.nombre.substring(0,45) %>
+                </option>
+                <% }) %>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-semibold small">Centro de Costo</label>
+              <select name="id_cc" class="form-select">
+                <option value="">Sin centro de costo</option>
+                <% centros.forEach(c=>{ %>
+                <option value="<%= c.id_cc %>" <%=movimiento&&movimiento.id_cc==c.id_cc?'selected':''%>>
+                  <%= c.codigo %> - <%= c.nombre %>
+                </option>
+                <% }) %>
+              </select>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label fw-semibold small">Debito ($)</label>
+              <div class="input-group">
+                <span class="input-group-text" style="background:#e3f2fd;color:#1565c0"><i class="fas fa-arrow-up"></i></span>
+                <input type="number" name="debito" id="debito" class="form-control"
+                       value="<%= movimiento?movimiento.debito:0 %>" min="0" step="0.01"
+                       oninput="if(this.value>0) document.getElementById('credito').value=0">
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label fw-semibold small">Credito ($)</label>
+              <div class="input-group">
+                <span class="input-group-text" style="background:#fce4ec;color:#880e4f"><i class="fas fa-arrow-down"></i></span>
+                <input type="number" name="credito" id="credito" class="form-control"
+                       value="<%= movimiento?movimiento.credito:0 %>" min="0" step="0.01"
+                       oninput="if(this.value>0) document.getElementById('debito').value=0">
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label fw-semibold small">&nbsp;</label>
+              <div class="alert alert-warning py-2 mb-0 small">
+                <i class="fas fa-exclamation-triangle me-1"></i>Solo llene UNO de los dos campos.
+              </div>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label fw-semibold small">Descripcion / Glosa</label>
+              <input type="text" name="descripcion" class="form-control"
+                     value="<%= movimiento&&movimiento.descripcion?movimiento.descripcion:'' %>" maxlength="200">
+            </div>
+          </div>
+          <hr class="my-4">
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary px-4"><i class="fas fa-save me-1"></i>Guardar</button>
+            <a href="/movimientos" class="btn btn-outline-secondary px-4">Cancelar</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<%- include('../partials/foot') %>

@@ -1,0 +1,100 @@
+<%- include('partials/head') %>
+<div class="d-flex">
+<%- include('partials/sidebar') %>
+<div class="main-content w-100">
+  <%- include('partials/topbar') %>
+  <div class="p-4">
+    <%- include('partials/alerts') %>
+
+    <% if(typeof dbError!=='undefined' && dbError) { %>
+    <div class="alert alert-warning"><i class="fas fa-database me-2"></i><strong>Error de conexion a BD:</strong> <%= dbError %></div>
+    <% } %>
+
+    <!-- KPI Cards -->
+    <div class="row g-3 mb-4">
+      <div class="col-6 col-md-2">
+        <div class="card p-3 text-center h-100">
+          <div class="text-muted small mb-1">Cuentas Activas</div>
+          <div class="fw-bold text-primary" style="font-size:1.8rem"><%= stats.cuentas||0 %></div>
+          <div class="text-muted" style="font-size:.7rem">Plan de cuentas</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-2">
+        <div class="card p-3 text-center h-100">
+          <div class="text-muted small mb-1">Terceros</div>
+          <div class="fw-bold text-success" style="font-size:1.8rem"><%= stats.terceros||0 %></div>
+          <div class="text-muted" style="font-size:.7rem">Activos</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-2">
+        <div class="card p-3 text-center h-100">
+          <div class="text-muted small mb-1">Comprobantes</div>
+          <div class="fw-bold text-warning" style="font-size:1.8rem"><%= stats.comprobantes||0 %></div>
+          <div class="text-muted" style="font-size:.7rem">Total registrados</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-2">
+        <div class="card p-3 text-center h-100">
+          <div class="text-muted small mb-1">Movimientos</div>
+          <div class="fw-bold text-danger" style="font-size:1.8rem"><%= stats.movimientos||0 %></div>
+          <div class="text-muted" style="font-size:.7rem">Lineas contables</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-2">
+        <div class="card p-3 text-center h-100">
+          <div class="text-muted small mb-1">Total Debitos</div>
+          <div class="fw-bold text-info" style="font-size:1rem"><%= Number(stats.total_debitos||0).toLocaleString('es-CO',{style:'currency',currency:'COP',maximumFractionDigits:0}) %></div>
+        </div>
+      </div>
+      <div class="col-6 col-md-2">
+        <div class="card p-3 text-center h-100">
+          <div class="text-muted small mb-1">Total Creditos</div>
+          <div class="fw-bold text-secondary" style="font-size:1rem"><%= Number(stats.total_creditos||0).toLocaleString('es-CO',{style:'currency',currency:'COP',maximumFractionDigits:0}) %></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ultimos comprobantes -->
+    <div class="card">
+      <div class="card-header bg-white border-0 pt-3 px-4 d-flex justify-content-between align-items-center">
+        <h6 class="fw-semibold mb-0"><i class="fas fa-clock me-2 text-primary"></i>Ultimos Comprobantes</h6>
+        <a href="/comprobantes" class="btn btn-sm btn-outline-primary">Ver todos</a>
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead class="table-light">
+              <tr>
+                <th class="ps-4">Comprobante</th>
+                <th>Tipo</th>
+                <th>Fecha</th>
+                <th>Concepto</th>
+                <th>Tercero</th>
+                <th class="text-end">Valor</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% ultimosComp.forEach(c => { %>
+              <tr>
+                <td class="ps-4"><span class="badge bg-secondary"><%= c.prefijo %>-<%= String(c.numero).padStart(3,'0') %></span></td>
+                <td><small class="text-muted"><%= c.tipo %></small></td>
+                <td><small><%= c.fecha ? new Date(c.fecha).toLocaleDateString('es-CO') : '-' %></small></td>
+                <td style="max-width:260px" class="text-truncate"><small><%= c.concepto %></small></td>
+                <td><small><%= c.razon_social||'-' %></small></td>
+                <td class="text-end"><small><%= Number(c.valor_total).toLocaleString('es-CO',{style:'currency',currency:'COP',maximumFractionDigits:0}) %></small></td>
+                <td><span class="badge es-<%= c.estado %>"><%= c.estado %></span></td>
+              </tr>
+              <% }) %>
+              <% if(!ultimosComp.length) { %>
+              <tr><td colspan="7" class="text-center text-muted py-4">Sin comprobantes registrados</td></tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<%- include('partials/foot') %>

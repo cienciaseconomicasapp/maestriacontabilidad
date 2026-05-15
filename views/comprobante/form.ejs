@@ -1,0 +1,109 @@
+<%- include('../partials/head') %>
+<div class="d-flex">
+<%- include('../partials/sidebar') %>
+<div class="main-content w-100">
+  <%- include('../partials/topbar') %>
+  <div class="p-4">
+    <%- include('../partials/alerts') %>
+    <div class="card" style="max-width:950px">
+      <div class="card-header bg-white border-0 pt-3 px-4">
+        <h6 class="fw-semibold mb-0"><%= pageTitle %></h6>
+      </div>
+      <div class="card-body px-4 pb-4">
+        <form method="POST" action="<%= action %>">
+          <div class="row g-3">
+
+            <div class="col-md-3">
+              <label class="form-label fw-semibold small">Tipo <span class="text-danger">*</span></label>
+              <select name="tipo" class="form-select" required>
+                <% tipos.forEach(t=>{ %>
+                <option value="<%= t %>" <%=comprobante&&comprobante.tipo===t?'selected':''%>><%= t %></option>
+                <% }) %>
+              </select>
+            </div>
+            <div class="col-md-2">
+              <label class="form-label fw-semibold small">Prefijo</label>
+              <input type="text" name="prefijo" class="form-control"
+                     value="<%= comprobante?comprobante.prefijo:'CC' %>" maxlength="5">
+            </div>
+            <div class="col-md-2">
+              <label class="form-label fw-semibold small">Numero <span class="text-danger">*</span></label>
+              <input type="number" name="numero" class="form-control"
+                     value="<%= comprobante?comprobante.numero:'' %>" required min="1">
+            </div>
+            <div class="col-md-2">
+              <label class="form-label fw-semibold small">Fecha <span class="text-danger">*</span></label>
+              <input type="date" name="fecha" class="form-control"
+                     value="<%= comprobante&&comprobante.fecha?new Date(comprobante.fecha).toISOString().slice(0,10):'' %>" required>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label fw-semibold small">Periodo <span class="text-danger">*</span>
+                <small class="text-muted fw-normal">AAAA-MM</small>
+              </label>
+              <input type="text" name="periodo" class="form-control"
+                     value="<%= comprobante?comprobante.periodo:'' %>" required maxlength="7" placeholder="2024-01">
+            </div>
+
+            <div class="col-12">
+              <label class="form-label fw-semibold small">Concepto <span class="text-danger">*</span></label>
+              <input type="text" name="concepto" class="form-control"
+                     value="<%= comprobante?comprobante.concepto:'' %>" required maxlength="300">
+            </div>
+
+            <div class="col-md-5">
+              <label class="form-label fw-semibold small">Tercero</label>
+              <select name="id_tercero" class="form-select">
+                <option value="">Sin tercero</option>
+                <% terceros.forEach(t=>{ %>
+                <option value="<%= t.id_tercero %>" <%=comprobante&&comprobante.id_tercero==t.id_tercero?'selected':''%>>
+                  <%= t.nit %> - <%= t.razon_social.substring(0,35) %>
+                </option>
+                <% }) %>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label fw-semibold small">Centro de Costo</label>
+              <select name="id_cc" class="form-select">
+                <option value="">Sin centro</option>
+                <% centros.forEach(c=>{ %>
+                <option value="<%= c.id_cc %>" <%=comprobante&&comprobante.id_cc==c.id_cc?'selected':''%>>
+                  <%= c.codigo %> - <%= c.nombre %>
+                </option>
+                <% }) %>
+              </select>
+            </div>
+            <div class="col-md-2">
+              <label class="form-label fw-semibold small">Valor Total</label>
+              <div class="input-group">
+                <span class="input-group-text">$</span>
+                <input type="number" name="valor_total" class="form-control"
+                       value="<%= comprobante?comprobante.valor_total:0 %>" min="0" step="1">
+              </div>
+            </div>
+            <div class="col-md-2">
+              <label class="form-label fw-semibold small">Estado</label>
+              <select name="estado" class="form-select">
+                <% estados.forEach(e=>{ %>
+                <option value="<%= e %>" <%=comprobante&&comprobante.estado===e?'selected':''%>><%= e %></option>
+                <% }) %>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label fw-semibold small">Usuario que crea</label>
+              <input type="text" name="usuario_crea" class="form-control"
+                     value="<%= comprobante&&comprobante.usuario_crea?comprobante.usuario_crea:user.username %>" maxlength="60">
+            </div>
+
+          </div>
+          <hr class="my-4">
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary px-4"><i class="fas fa-save me-1"></i>Guardar</button>
+            <a href="/comprobantes" class="btn btn-outline-secondary px-4">Cancelar</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<%- include('../partials/foot') %>

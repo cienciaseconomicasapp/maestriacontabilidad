@@ -1,0 +1,50 @@
+<%- include('../partials/head') %>
+<div class="d-flex">
+<%- include('../partials/sidebar') %>
+<div class="main-content w-100">
+  <%- include('../partials/topbar') %>
+  <div class="p-4">
+    <%- include('../partials/alerts') %>
+    <div class="card">
+      <div class="card-header bg-white border-0 pt-3 px-4 d-flex justify-content-between align-items-center">
+        <h6 class="fw-semibold mb-0"><i class="fas fa-users me-2 text-primary"></i>Terceros (Clientes, Proveedores, Empleados)</h6>
+        <a href="/terceros/nuevo" class="btn btn-primary btn-sm"><i class="fas fa-plus me-1"></i>Nuevo Tercero</a>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover dt">
+            <thead class="table-light">
+              <tr>
+                <th>NIT / CC</th><th>Razon Social</th><th>Tipo</th><th>Regimen</th>
+                <th>Ciudad</th><th>Email</th><th>Estado</th><th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% const tipoCls={cliente:'primary',proveedor:'warning',empleado:'success',accionista:'info',entidad_publica:'dark',otro:'secondary'}; %>
+              <% terceros.forEach(t=>{ %>
+              <tr>
+                <td><code><%= t.nit %><%= t.digito_vf?'-'+t.digito_vf:'' %></code></td>
+                <td class="fw-semibold"><%= t.razon_social %></td>
+                <td><span class="badge bg-<%= tipoCls[t.tipo]||'secondary' %>"><%= t.tipo %></span></td>
+                <td><small class="text-muted"><%= t.regimen?t.regimen.replace(/_/g,' '):'-' %></small></td>
+                <td><small><%= t.ciudad||'-' %></small></td>
+                <td><small><%= t.email||'-' %></small></td>
+                <td><span class="badge" style="background:<%= t.activo?'#e8f5e9':'#fce4ec' %>;color:<%= t.activo?'#2e7d32':'#c62828' %>"><%= t.activo?'Activo':'Inactivo' %></span></td>
+                <td>
+                  <a href="/terceros/<%= t.id_tercero %>/editar" class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-edit"></i></a>
+                  <form method="POST" action="/terceros/<%= t.id_tercero %>?_method=DELETE" class="d-inline"
+                        onsubmit="return confirm('Eliminar este tercero?')">
+                    <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                  </form>
+                </td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<%- include('../partials/foot') %>

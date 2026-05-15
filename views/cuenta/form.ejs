@@ -1,0 +1,102 @@
+<%- include('../partials/head') %>
+<div class="d-flex">
+<%- include('../partials/sidebar') %>
+<div class="main-content w-100">
+  <%- include('../partials/topbar') %>
+  <div class="p-4">
+    <%- include('../partials/alerts') %>
+    <div class="card" style="max-width:900px">
+      <div class="card-header bg-white border-0 pt-3 px-4">
+        <h6 class="fw-semibold mb-0"><%= pageTitle %></h6>
+      </div>
+      <div class="card-body px-4 pb-4">
+        <form method="POST" action="<%= action %>">
+          <div class="row g-3">
+
+            <div class="col-md-3">
+              <label class="form-label fw-semibold small">Codigo PUC <span class="text-danger">*</span></label>
+              <input type="text" name="codigo" class="form-control"
+                     value="<%= cuenta?cuenta.codigo:'' %>" required maxlength="10" placeholder="ej. 1105">
+            </div>
+
+            <div class="col-md-9">
+              <label class="form-label fw-semibold small">Nombre <span class="text-danger">*</span></label>
+              <input type="text" name="nombre" class="form-control"
+                     value="<%= cuenta?cuenta.nombre:'' %>" required maxlength="120">
+            </div>
+
+            <div class="col-md-3">
+              <label class="form-label fw-semibold small">Clase <span class="text-danger">*</span></label>
+              <select name="clase" class="form-select" required>
+                <option value="">Seleccionar...</option>
+                <% [[1,'Activo'],[2,'Pasivo'],[3,'Patrimonio'],[4,'Ingreso'],[5,'Gasto'],[6,'Costo']].forEach(([v,l])=>{ %>
+                <option value="<%= v %>" <%=cuenta&&cuenta.clase==v?'selected':''%>><%= v %> - <%= l %></option>
+                <% }) %>
+              </select>
+            </div>
+
+            <div class="col-md-5">
+              <label class="form-label fw-semibold small">Tipo NIIF <span class="text-danger">*</span></label>
+              <select name="tipo" class="form-select" required>
+                <option value="">Seleccionar...</option>
+                <% tipos.forEach(t=>{ %>
+                <option value="<%= t %>" <%=cuenta&&cuenta.tipo===t?'selected':''%>><%= t.replace(/_/g,' ') %></option>
+                <% }) %>
+              </select>
+            </div>
+
+            <div class="col-md-2">
+              <label class="form-label fw-semibold small">Naturaleza <span class="text-danger">*</span></label>
+              <select name="naturaleza" class="form-select" required>
+                <option value="debito"  <%=cuenta&&cuenta.naturaleza==='debito'?'selected':''%>>Debito</option>
+                <option value="credito" <%=cuenta&&cuenta.naturaleza==='credito'?'selected':''%>>Credito</option>
+              </select>
+            </div>
+
+            <div class="col-md-2">
+              <label class="form-label fw-semibold small">Nivel <span class="text-danger">*</span></label>
+              <select name="nivel" class="form-select" required>
+                <% [1,2,3,4].forEach(n=>{ %>
+                <option value="<%= n %>" <%=cuenta&&cuenta.nivel==n?'selected':''%>><%= n %></option>
+                <% }) %>
+              </select>
+            </div>
+
+            <div class="col-md-5">
+              <label class="form-label fw-semibold small">Cuenta Padre</label>
+              <select name="cuenta_padre" class="form-select">
+                <option value="">Sin cuenta padre</option>
+                <% padres.forEach(p=>{ %>
+                <option value="<%= p.codigo %>" <%=cuenta&&cuenta.cuenta_padre===p.codigo?'selected':''%>>
+                  <%= p.codigo %> - <%= p.nombre.substring(0,40) %>
+                </option>
+                <% }) %>
+              </select>
+            </div>
+
+            <div class="col-md-7 d-flex align-items-end gap-4 pb-1">
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" name="acepta_mov" id="acepta_mov"
+                       <%=(!cuenta||cuenta.acepta_mov)?'checked':''%>>
+                <label class="form-check-label small fw-semibold" for="acepta_mov">Acepta movimientos directos</label>
+              </div>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" name="activa" id="activa"
+                       <%=(!cuenta||cuenta.activa)?'checked':''%>>
+                <label class="form-check-label small fw-semibold" for="activa">Activa</label>
+              </div>
+            </div>
+
+          </div>
+          <hr class="my-4">
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary px-4"><i class="fas fa-save me-1"></i>Guardar</button>
+            <a href="/cuentas" class="btn btn-outline-secondary px-4">Cancelar</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<%- include('../partials/foot') %>

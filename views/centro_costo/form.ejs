@@ -1,0 +1,48 @@
+<%- include('../partials/head') %>
+<div class="d-flex">
+<%- include('../partials/sidebar') %>
+<div class="main-content w-100">
+  <%- include('../partials/topbar') %>
+  <div class="p-4">
+    <%- include('../partials/alerts') %>
+    <div class="card" style="max-width:600px">
+      <div class="card-header bg-white border-0 pt-3 px-4">
+        <h6 class="fw-semibold mb-0"><%= pageTitle %></h6>
+      </div>
+      <div class="card-body px-4 pb-4">
+        <form method="POST" action="<%= action %>">
+          <div class="row g-3">
+            <div class="col-md-4">
+              <label class="form-label fw-semibold small">Codigo <span class="text-danger">*</span></label>
+              <input type="text" name="codigo" class="form-control"
+                     value="<%= centro?centro.codigo:'' %>" required maxlength="10" placeholder="ej. ADM">
+            </div>
+            <div class="col-md-8">
+              <label class="form-label fw-semibold small">Nombre <span class="text-danger">*</span></label>
+              <input type="text" name="nombre" class="form-control"
+                     value="<%= centro?centro.nombre:'' %>" required maxlength="100">
+            </div>
+            <div class="col-12">
+              <label class="form-label fw-semibold small">Descripcion</label>
+              <textarea name="descripcion" class="form-control" rows="2" maxlength="255"><%= centro?centro.descripcion:'' %></textarea>
+            </div>
+            <div class="col-12">
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" name="activo" id="activo"
+                       <%=(!centro||centro.activo)?'checked':''%>>
+                <label class="form-check-label small fw-semibold" for="activo">Activo</label>
+              </div>
+            </div>
+          </div>
+          <hr class="my-4">
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary px-4"><i class="fas fa-save me-1"></i>Guardar</button>
+            <a href="/centros-costo" class="btn btn-outline-secondary px-4">Cancelar</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<%- include('../partials/foot') %>
