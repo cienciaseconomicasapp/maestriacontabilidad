@@ -11,11 +11,11 @@ const TIPOS = [
   'costo_ventas'
 ];
 
-router.get('/', async (req, res) => {
+router.get('/', async (req, res, next) => {
   try {
     const [rows] = await db.query('SELECT * FROM cuenta ORDER BY codigo');
     res.render('cuenta/list', { pageTitle: 'Plan de Cuentas', section: 'cuentas', cuentas: rows });
-  } catch (err) { req.flash('error', err.message); res.redirect('/'); }
+  } catch (err) { next(err); }
 });
 
 router.get('/nueva', async (req, res) => {

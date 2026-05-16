@@ -69,5 +69,18 @@ app.get('/', requireAuth, async (req, res) => {
   }
 });
 
+// Manejador global de errores — muestra el mensaje en pantalla
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send(`
+    <div style="font-family:monospace;padding:40px;max-width:800px;margin:auto">
+      <h2 style="color:#c62828">&#9888; Error del servidor</h2>
+      <p><strong>${err.message}</strong></p>
+      <pre style="background:#f5f5f5;padding:16px;border-radius:8px;overflow:auto">${err.stack}</pre>
+      <a href="/" style="color:#1565c0">&#8592; Volver al inicio</a>
+    </div>
+  `);
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Servidor corriendo en puerto ${PORT}`));
