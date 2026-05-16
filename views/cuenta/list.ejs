@@ -47,7 +47,7 @@
                 <td>
                   <a href="/cuentas/<%= c.id_cuenta %>/editar" class="btn btn-sm btn-outline-primary me-1" title="Editar"><i class="fas fa-edit"></i></a>
                   <form method="POST" action="/cuentas/<%= c.id_cuenta %>?_method=DELETE" class="d-inline"
-                        onsubmit="return confirm('Eliminar la cuenta <%= c.codigo %> - <%= c.nombre.replace(/'/g,\"\") %>?')">
+                        onsubmit="return confirm('Eliminar cuenta <%= c.codigo %>?')">
                     <button class="btn btn-sm btn-outline-danger" title="Eliminar"><i class="fas fa-trash"></i></button>
                   </form>
                 </td>
